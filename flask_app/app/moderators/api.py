@@ -1,10 +1,5 @@
 from . import moderators
 
-# CRUD турниров
-# Подтверждение команды
-# Назначение победителей
-# Выставление очков
-
 # JSON: {
 #     name,
 #     login,
@@ -36,16 +31,8 @@ def login():
 def add_tournament():
     return 'moderators.add_tournament: ok / wrong data'
 
-@moderators.route('/get_tournament/<int:id>', methods=['GET'])
-def get_tournament(id):
-    return 'moderators.get_tournament: tournament.name, tournament.description, tournament.game, tournament.prize, ' +\
-        'tournament.start_date, tournament.end_date, tournament.team_format, tournament.teams_count / wrong data'
-
-@moderators.route('/get_tournaments/<int:id>', methods=['GET'])
-def get_tournaments(id):
-    return 'moderators.get_tournaments: [ tournament.id ] / wrong data'
-
 # JSON: {
+#     id,
 #     name,
 #     description,
 #     game,
