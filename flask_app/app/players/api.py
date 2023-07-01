@@ -40,7 +40,7 @@ def add_lineup():
 
 @players.route('/get_lineup/<int:id>', methods=['GET'])
 def get_lineup(id):
-    return 'players.get_lineup: lineup.name, lineup.size, lineup.place, lineup.is_active, lineup.owner_id, lineup.tournament_id / wrong data'
+    return 'players.get_lineup: lineup.name, lineup.place, lineup.is_active, lineup.owner_id, lineup.tournament_id / wrong data'
 
 @players.route('/get_lineups_by_owner/<int:id>', methods=['GET'])
 def get_lineups_by_owner(id):
