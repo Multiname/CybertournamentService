@@ -7,7 +7,7 @@ class Moderator(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(30), nullable=False)
     login = db.Column(db.String(30), nullable=False)
-    password = db.Column(db.String(30), nullable=False)
+    password = db.Column(db.String(150), nullable=False)
 
     def __repr__(self):
         return '<{}:{}>'.format(self.id, self.name)
@@ -24,16 +24,31 @@ class Player(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     nickname = db.Column(db.String(30), nullable=False)
     login = db.Column(db.String(30), nullable=False)
-    password = db.Column(db.String(30), nullable=False)
-    points = db.Column(db.Integer(), nullable=False)
+    password = db.Column(db.String(150), nullable=False)
+    points = db.Column(db.Integer(), nullable=False, default=0)
+
+    players_lineups = db.relationship('PlayerLineup', backref='player')
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
     def __repr__(self):
         return '<{}:{}>'.format(self.id, self.nickname)
     
-players_lineups = db.Table('players_lineups',
-                           db.Column('player_id', db.Integer, db.ForeignKey('players.id')),
-                           db.Column('lineup_id', db.Integer, db.ForeignKey('lineups.id')),
-                           db.Column('is_owner', db.Boolean, nullable=False))
+class PlayerLineup(db.Model):
+    __tablename__ = 'players_lineups'
+
+    id = db.Column(db.Integer(), primary_key=True)
+    is_owner = db.Column(db.Boolean(), nullable=False, default=False)
+
+    player_id = db.Column(db.Integer(), db.ForeignKey('players.id'), nullable=False)
+    lineup_id = db.Column(db.Integer(), db.ForeignKey('lineups.id'), nullable=False)
+
+    def __repr__(self):
+        return '<{}:{}>'.format(self.player_id, self.lineup_id)
 
 class Lineup(db.Model):
     __tablename__ = 'lineups'
@@ -41,11 +56,11 @@ class Lineup(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(30), nullable=False)
     place = db.Column(db.Integer(), nullable=True)
-    is_active = db.Column(db.Boolean(), nullable=False)
+    is_active = db.Column(db.Boolean(), nullable=False, default=False)
     
-    tournament_id = db.Column(db.Integer(), db.ForeignKey('tournaments.id'))
+    tournament_id = db.Column(db.Integer(), db.ForeignKey('tournaments.id'), nullable=False)
 
-    players = db.relationship('Player', secondary=players_lineups, backref='lineups')
+    players_lineups = db.relationship('PlayerLineup', backref='lineup', cascade='all,delete-orphan')
 
     def __repr__(self):
         return '<{}:{}>'.format(self.id, self.name)
