@@ -7,7 +7,7 @@ from . import players
 # }
 @players.route('/register/', methods=['POST'])
 def register():
-    return 'players.register: ok / password exists'
+    return 'players.register: ok / login exists'
 
 # JSON: {
 #     login,
@@ -19,7 +19,11 @@ def login():
 
 @players.route('/get_player/<int:id>', methods=['GET'])
 def get_player(id):
-    return 'players.get_player: player.id, player.nickname, player.points / wrong data'
+    return 'players.get_player: player.nickname, player.points / wrong data'
+
+@players.route('/get_players_by_lineup/<int:id>', methods=['GET'])
+def get_players_by_lineup(id):
+    return 'players.get_players_by_lineup: [ player.id ] / wrong data'
 
 @players.route('/get_players/', methods=['GET'])
 def get_players():
@@ -36,7 +40,7 @@ def add_lineup():
 
 @players.route('/get_lineup/<int:id>', methods=['GET'])
 def get_lineup(id):
-    return 'players.get_lineup: lineup.name, lineup.size, lineup.place, lineup.is_active, lineup.owner_id, lineup.tournament_id / wrong data'
+    return 'players.get_lineup: lineup.name, lineup.place, lineup.is_active, lineup.owner_id, lineup.tournament_id / wrong data'
 
 @players.route('/get_lineups_by_owner/<int:id>', methods=['GET'])
 def get_lineups_by_owner(id):
